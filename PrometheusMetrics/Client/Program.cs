@@ -5,7 +5,8 @@ var uri = new Uri("http://webapi:8080");
 var client = new HttpClient { BaseAddress = uri };
 
 // доступные эндпоинты, на каждой итерации выбираем один случайным образом
-var endpoints = new List<string> { "/code-2xx", "/code-4xx", "/code-5xx", "/ms-200", "/ms-500", "/ms-1000" };
+//var endpoints = new List<string> { "/code-2xx", "/code-4xx", "/code-5xx", "/ms-200", "/ms-500", "/ms-1000", "/mix5", "/mix10" };
+var endpoints = new List<string> { "/code-2xx", "/mix5", "/mix10" };
 var rnd = new Random();
 
 Console.WriteLine($"Crazy Client started at {uri}");
@@ -25,4 +26,7 @@ while (true)
             Console.WriteLine(ex);
         }
     });
+
+    // немного ждем, а то вентилятор ноута сходит с ума 
+    await Task.Delay(rnd.Next(50));
 }

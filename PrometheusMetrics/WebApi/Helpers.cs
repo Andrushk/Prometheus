@@ -48,5 +48,34 @@ namespace WebApi
             await Task.Delay(Rnd.Next(duration) + duration);
             return Results.Ok();
         }
+
+        public static async Task<IResult> Mix(int duration, int errorsPercent)
+        {
+            // типа работаем
+            await Task.Delay(Rnd.Next(duration) + duration);
+
+            // тут решаем возвращать ОК или ОШИБКУ
+            if (Rnd.Next(100) < errorsPercent)
+            {
+                // ошибки могут быть разными, 500 кидаем чаще чем остальные
+                switch (Rnd.Next(8))
+                {
+                    case < 4:
+                        return Random5xx();
+                    case >= 4 and < 7:
+                        return Random4xx();
+                    case 7:
+                        throw new Exception("Страшная не перехваченная ошибка");
+                }
+            }
+
+            // иногда вдруг задача оказывается ОЧЕНЬ тяжелой
+            if (Rnd.Next(50) == 42)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(60 + Rnd.Next(100)));
+            }
+
+            return Random2xx();
+        }
     }
 }
